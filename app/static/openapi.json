@@ -1,0 +1,141 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Test Application",
+    "description": "",
+    "contact": {
+      "email": "austinbevil@gt.rr.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "scans",
+      "description": "Details about stored scans"
+    },
+    {
+      "name": "upload",
+      "description": "Upload nmap scan files in XML form"
+    }
+  ],
+  "paths": {
+    "/scans": {
+      "get": {
+        "tags": [
+          "scans"
+        ],
+        "summary": "Get a list of nmap scans",
+        "operationId": "getScans",
+        "parameters": [
+          {
+            "name": "max_results",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter number of hosts returned",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesful operation"
+          },
+          "404": {
+            "description": "Scan not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/scans/ip/{host_ip}": {
+      "get": {
+        "tags": [
+          "scans"
+        ],
+        "summary": "Get a list of nmap scans filtered by host IP",
+        "operationId": "getScansIP",
+        "parameters": [
+          {
+            "name": "host_ip",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Scan not found"
+          }
+        }
+      }
+    },
+    "/scans/uid/{uid}": {
+      "get": {
+        "tags": [
+          "scans"
+        ],
+        "summary": "Get a list of nmap scans filtered by nmap scan ID",
+        "operationId": "getScansUid",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Scan not found"
+          }
+        }
+      }
+    },
+    "/upload": {
+      "post": {
+        "tags": [
+          "upload"
+        ],
+        "summary": "Upload XML file containing nmap scan results",
+        "operationId": "uploadScan",
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Unable to parse XML"
+          },
+          "406": {
+            "description": "Duplicate scan entry located in database"
+          }
+        }
+      }
+    }
+  }
+}

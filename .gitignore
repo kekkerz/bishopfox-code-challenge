@@ -1,0 +1,3 @@
+app/database/nmap_data.db
+app/__pycache__
+*.xml
